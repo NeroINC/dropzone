@@ -1086,9 +1086,28 @@
             }
           };
           img.onerror = callback;
-          return img.src = fileReader.result;
+          img.src = fileReader.result;
+
+          if(EXIF){
+            EXIF.getData(img, function(){
+              file.orientation = EXIF.getTag(this, "Orientation");
+            });
+          }
+
+          return;
         };
       })(this);
+
+      // Thumb generation error
+      fileReader.onerror = (function(_this){
+        return function(){
+          _this.emit("thumbnail", file, "");
+          if (callback != null) {
+            return callback();
+          }
+        };
+      })(this);
+
       return fileReader.readAsDataURL(file);
     };
 
