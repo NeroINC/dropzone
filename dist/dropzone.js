@@ -1096,10 +1096,9 @@
           if(EXIF){
             EXIF.getData(img, function(){
               file.orientation = EXIF.getTag(this, "Orientation");
+              return;
             });
-          }
-
-          return;
+          }else{return;}
         };
       })(this);
 
